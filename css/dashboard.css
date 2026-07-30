@@ -1,0 +1,259 @@
+/* ============================================================
+   Webkarya — Dashboard stylesheet (v2: fokus pencatatan order)
+   Mewarisi variabel warna & font dari css/style.css (blueprint neon)
+   ============================================================ */
+
+html, body { height: 100%; }
+
+/* Safety net in case the Tailwind CDN script is slow/blocked on first paint —
+   ensures show/hide logic (login gate, section switching) still works. */
+.hidden { display: none !important; }
+
+body.dashboard-body {
+  background-color: var(--ink);
+  background-image:
+    linear-gradient(var(--line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+  background-size: 36px 36px;
+  background-attachment: fixed;
+}
+
+/* ---------- Layout ---------- */
+.dash-shell { min-height: 100vh; }
+
+.dash-sidebar {
+  background: var(--soft);
+  border-right: 1px solid var(--line);
+}
+
+.dash-sidebar .side-link {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 0.6rem;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: 1px solid transparent;
+  transition: all .2s ease;
+}
+.dash-sidebar .side-link:hover {
+  color: var(--text);
+  background: rgba(245, 247, 255, 0.04);
+  border-color: var(--line);
+}
+.dash-sidebar .side-link.active {
+  color: var(--text);
+  background: rgba(34, 211, 238, 0.08);
+  border-color: var(--cyan-dim);
+}
+.dash-sidebar .side-link.active svg { color: var(--cyan); }
+.dash-sidebar .side-link svg { width: 1.1rem; height: 1.1rem; flex: none; }
+
+.dash-topbar {
+  background: rgba(10, 14, 28, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+/* ---------- Live clock ---------- */
+.live-clock {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.live-dot {
+  width: 7px; height: 7px; border-radius: 999px;
+  background: #4ADE80;
+  box-shadow: 0 0 0 0 rgba(74,222,128,.6);
+  animation: pulse-dot 2s infinite;
+  flex: none;
+}
+@keyframes pulse-dot {
+  0% { box-shadow: 0 0 0 0 rgba(74,222,128,.55); }
+  70% { box-shadow: 0 0 0 6px rgba(74,222,128,0); }
+  100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
+}
+
+/* ---------- Cards / stat ---------- */
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--cyan);
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.4rem;
+  position: relative;
+  overflow: hidden;
+}
+.stat-card.accent-pink { border-left-color: var(--pink); }
+.stat-card::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(34,211,238,.06), transparent 60%);
+  pointer-events: none;
+}
+
+/* ---------- Panels ---------- */
+.dash-panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+}
+
+/* ---------- Ranking list ---------- */
+.rank-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px dashed var(--line-soft);
+  font-size: 0.85rem;
+}
+.rank-row:last-child { border-bottom: none; }
+.rank-num {
+  width: 1.5rem; height: 1.5rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 999px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  font-size: 0.7rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-dim);
+  flex: none;
+}
+
+/* ---------- Table ---------- */
+.dash-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.dash-table thead th {
+  text-align: left;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.dash-table tbody td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--line-soft);
+  vertical-align: top;
+  white-space: nowrap;
+}
+.dash-table tbody tr:hover { background: rgba(245,247,255,0.02); }
+.dash-table tbody tr:last-child td { border-bottom: none; }
+.dash-table tfoot td {
+  padding: 0.85rem 1rem;
+  border-top: 1px solid var(--line);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+}
+
+/* ---------- Form controls ---------- */
+.field-label {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  margin-bottom: 0.35rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+.field-input, .field-select, .field-textarea {
+  width: 100%;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 0.55rem;
+  padding: 0.6rem 0.8rem;
+  color: var(--text);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.field-input:focus, .field-select:focus, .field-textarea:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(34,211,238,0.12);
+}
+.field-textarea { resize: vertical; min-height: 5rem; }
+.field-input::placeholder, .field-textarea::placeholder { color: #5B6690; }
+
+/* ---------- Badges ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-family: 'JetBrains Mono', monospace;
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+}
+.badge-cyan { color: var(--cyan); border-color: rgba(34,211,238,.35); background: rgba(34,211,238,.07); }
+.badge-pink { color: var(--pink); border-color: rgba(255,60,172,.35); background: rgba(255,60,172,.07); }
+.badge-green { color: #4ADE80; border-color: rgba(74,222,128,.35); background: rgba(74,222,128,.07); }
+.badge-red { color: #F87171; border-color: rgba(248,113,113,.35); background: rgba(248,113,113,.07); }
+
+/* ---------- Icon buttons ---------- */
+.icon-btn {
+  width: 2rem; height: 2rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 0.5rem;
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  transition: all .2s ease;
+}
+.icon-btn:hover { color: var(--text); border-color: var(--cyan); background: rgba(34,211,238,.06); }
+.icon-btn.danger:hover { color: #F87171; border-color: #F87171; background: rgba(248,113,113,.08); }
+.icon-btn svg { width: 0.95rem; height: 0.95rem; }
+
+/* ---------- Toast ---------- */
+#toastHost { position: fixed; bottom: 1.25rem; right: 1.25rem; z-index: 200; display: flex; flex-direction: column; gap: 0.6rem; }
+.toast {
+  background: var(--panel);
+  border: 1px solid var(--cyan-dim);
+  color: var(--text);
+  padding: 0.7rem 1.1rem;
+  border-radius: 0.6rem;
+  font-size: 0.85rem;
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+  animation: toast-in .25s ease;
+}
+.toast.error { border-color: #F87171; }
+@keyframes toast-in { from { opacity:0; transform: translateY(8px);} to {opacity:1; transform: translateY(0);} }
+
+/* ---------- Mobile sidebar ---------- */
+@media (max-width: 1023px) {
+  .dash-sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0;
+    width: 17rem; z-index: 90;
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+  }
+  .dash-sidebar.open { transform: translateX(0); }
+  #sidebarOverlay {
+    position: fixed; inset: 0; z-index: 80;
+    background: rgba(0,0,0,.5);
+    display: none;
+  }
+  #sidebarOverlay.open { display: block; }
+}
+
+/* Scrollbar (subtle, matches dark theme) */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--cyan-dim); }
+
+/* Login gate */
+#loginGate {
+  position: fixed; inset: 0; z-index: 300;
+  background: var(--ink);
+  display: flex; align-items: center; justify-content: center;
+}

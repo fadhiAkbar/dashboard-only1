@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard — Webkarya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body class="antialiased dashboard-body">
+
+<!-- ===================== LOGIN GATE ===================== -->
+<div id="loginGate">
+  <div class="bp-card rounded-2xl p-8 w-full max-w-sm mx-4">
+    <a href="index.html" class="font-display text-xl font-semibold flex items-center gap-2 mb-1">
+      <span class="text-[var(--cyan)]">&lt;/&gt;</span> Webkarya
+    </a>
+    <p class="tag-label mb-6">dashboard owner</p>
+    <form id="loginForm" class="space-y-4">
+      <div>
+        <label class="field-label">Password Dashboard</label>
+        <input id="loginPass" type="password" class="field-input" placeholder="Masukkan password" required />
+      </div>
+      <p id="loginError" class="text-sm text-red-400 hidden">Password salah, coba lagi.</p>
+      <button type="submit" class="btn-cyan w-full py-3 rounded-lg text-sm">Masuk</button>
+      <p class="text-xs text-[var(--text-dim)] text-center">Default: <span class="font-mono text-[var(--cyan)]">webkarya2026</span> — ganti di menu Pengaturan.</p>
+    </form>
+  </div>
+</div>
+
+<!-- ===================== APP ROOT ===================== -->
+<div id="appRoot" class="hidden dash-shell flex">
+
+  <div id="sidebarOverlay"></div>
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside id="dashSidebar" class="dash-sidebar w-64 flex-none flex flex-col p-5 lg:sticky lg:top-0 lg:h-screen">
+    <a href="index.html" class="font-display text-xl font-semibold flex items-center gap-2 mb-8 px-1">
+      <span class="text-[var(--cyan)]">&lt;/&gt;</span> Webkarya
+      <span class="tag-label ml-auto !text-[10px]">admin</span>
+    </a>
+
+    <nav class="flex flex-col gap-1 flex-1">
+      <button class="side-link active" data-section="ringkasan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13h4v7H3zM10 8h4v12h-4zM17 4h4v16h-4z"/></svg>
+        Ringkasan
+      </button>
+      <div class="dotted-rule my-2"></div>
+      <button class="side-link" data-section="pengaturan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Pengaturan
+      </button>
+    </nav>
+
+    <button id="btnLogout" class="btn-outline text-sm px-4 py-2.5 rounded-lg">Keluar</button>
+  </aside>
+
+  <!-- ===================== MAIN ===================== -->
+  <div class="flex-1 min-w-0">
+    <header class="dash-topbar sticky top-0 z-40 px-5 sm:px-8 py-4 flex items-center gap-4">
+      <button id="hamburgerDash" class="lg:hidden icon-btn flex-none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div class="min-w-0 flex-1">
+        <h1 id="pageTitle" class="font-display text-lg sm:text-xl font-semibold truncate">Ringkasan</h1>
+        <p id="pageSubtitle" class="text-xs sm:text-sm text-[var(--text-dim)] truncate">Catat order & pantau penjualan secara realtime</p>
+      </div>
+      <div class="live-clock flex-none">
+        <span class="live-dot"></span>
+        <span id="liveClock">—</span>
+      </div>
+    </header>
+
+    <main class="p-5 sm:p-8 max-w-6xl">
+
+      <!-- ===================== RINGKASAN ===================== -->
+      <section id="section-ringkasan" class="dash-section space-y-6">
+
+        <!-- Stat cards -->
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div class="stat-card">
+            <p class="tag-label mb-3">Produk Terjual</p>
+            <p id="statProdukTerjual" class="font-display text-4xl">0</p>
+            <p class="text-xs text-[var(--text-dim)] mt-1">total unit dari semua order</p>
+          </div>
+          <div class="stat-card accent-pink">
+            <p class="tag-label mb-3">Total Pendapatan</p>
+            <p id="statPendapatan" class="font-display text-4xl text-[var(--pink)]">Rp 0</p>
+            <p class="text-xs text-[var(--text-dim)] mt-1">total penjualan dari semua order</p>
+          </div>
+        </div>
+
+        <div class="grid lg:grid-cols-[22rem_1fr] gap-6 items-start">
+
+          <!-- Catat order baru -->
+          <div class="dash-panel rounded-xl p-6">
+            <div class="flex items-center justify-between mb-5">
+              <h3 class="font-display text-lg font-semibold">Catat Order Baru</h3>
+              <span class="badge badge-green">realtime</span>
+            </div>
+            <form id="orderForm" class="space-y-4">
+              <div>
+                <label class="field-label">Nama Jasa / Produk</label>
+                <input id="orderNama" class="field-input" placeholder="cth. Website UMKM Toko Bunga" required />
+              </div>
+              <div>
+                <label class="field-label">Kategori</label>
+                <input id="orderKategori" class="field-input" list="kategoriList" placeholder="cth. Landing Page" />
+                <datalist id="kategoriList"></datalist>
+              </div>
+              <div>
+                <label class="field-label">Harga Jual / unit (Rp)</label>
+                <input id="orderHarga" type="number" min="0" step="1000" class="field-input" placeholder="0" required />
+              </div>
+              <div>
+                <label class="field-label">Jumlah Terjual</label>
+                <input id="orderQty" type="number" min="1" step="1" class="field-input" placeholder="0" required />
+              </div>
+              <button type="submit" class="btn-cyan w-full py-3 rounded-lg text-sm">+ Tambah Order</button>
+            </form>
+          </div>
+
+          <div class="space-y-6 min-w-0">
+            <!-- Peringkat produk -->
+            <div class="dash-panel rounded-xl p-6">
+              <h3 class="font-display text-lg font-semibold mb-4">Peringkat Produk</h3>
+              <div class="grid sm:grid-cols-2 gap-6">
+                <div>
+                  <p class="badge badge-green mb-3">▲ paling laku</p>
+                  <div id="bestSellerList"></div>
+                </div>
+                <div>
+                  <p class="badge badge-red mb-3">▼ kurang laku</p>
+                  <div id="worstSellerList"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Riwayat order -->
+            <div class="dash-panel rounded-xl overflow-hidden">
+              <h3 class="font-display text-lg font-semibold p-6 pb-0">Riwayat Order</h3>
+              <div class="overflow-x-auto p-6 pt-4">
+                <table class="dash-table">
+                  <thead>
+                    <tr><th>No</th><th>Waktu</th><th>Produk</th><th>Kategori</th><th>Qty</th><th>Jual/u</th><th>Pendapatan</th><th></th></tr>
+                  </thead>
+                  <tbody id="orderTableBody"></tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="4" class="text-[var(--text-dim)]">TOTAL</td>
+                      <td id="footTotalQty">0</td>
+                      <td></td>
+                      <td id="footTotalPendapatan" class="text-[var(--cyan)]">Rp 0</td>
+                      <td></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-center text-xs text-[var(--text-dim)] font-mono">data tersimpan otomatis di browser (localStorage) · diperbarui realtime</p>
+      </section>
+
+      <!-- ===================== PENGATURAN ===================== -->
+      <section id="section-pengaturan" class="dash-section hidden space-y-5">
+        <div class="dash-panel rounded-xl p-6">
+          <h3 class="font-display text-lg font-semibold mb-4">Ganti Password Dashboard</h3>
+          <form id="changePassForm" class="space-y-4 max-w-sm">
+            <div>
+              <label class="field-label">Password saat ini</label>
+              <input id="curPass" type="password" class="field-input" required />
+            </div>
+            <div>
+              <label class="field-label">Password baru</label>
+              <input id="newPass" type="password" class="field-input" required />
+            </div>
+            <button type="submit" class="btn-cyan px-5 py-2.5 rounded-lg text-sm">Simpan Password</button>
+          </form>
+        </div>
+
+        <div class="dash-panel rounded-xl p-6">
+          <h3 class="font-display text-lg font-semibold mb-4">Data & Backup</h3>
+          <p class="text-sm text-[var(--text-dim)] mb-4">Data order tersimpan lokal di browser ini. Unduh backup secara berkala, terutama sebelum membersihkan cache/data browser.</p>
+          <div class="flex flex-wrap gap-3">
+            <button id="btnExport" class="btn-outline px-5 py-2.5 rounded-lg text-sm">Export Backup (.json)</button>
+            <label class="btn-outline px-5 py-2.5 rounded-lg text-sm cursor-pointer">
+              Import Backup
+              <input id="importFile" type="file" accept="application/json" class="hidden" />
+            </label>
+            <button id="btnReset" class="btn-outline px-5 py-2.5 rounded-lg text-sm hover:!border-red-400 hover:!text-red-400">Hapus Semua Data</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<div id="toastHost"></div>
+
+<script src="js/dashboard.js"></script>
+</body>
+</html>
