@@ -13,7 +13,7 @@ const DEFAULT_DATA = {
   orders: [], // { id, nama, kategori, hargaJual, qty, pendapatan, waktu(ISO) }
 };
 
-const KATEGORI_SUGGESTIONS = ["Logo", "Landing Page", "Company Profile", "UMKM Store", "Maintenance", "Custom"];
+const KATEGORI_SUGGESTIONS = ["Basic", "Starter", "Business"];
 
 // ---------- State ----------
 let state = loadData();
